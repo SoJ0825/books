@@ -9,8 +9,11 @@ Route::prefix('user')->group(function () {
     Route::post('register', [RegisterController::class, 'register']);
     Route::post('login', [AuthController::class, 'login']);
     Route::middleware('auth')->group(function () {
+        Route::get('profile', function () {
+            return auth()->user();
+        });
         Route::get('logout', [AuthController::class, 'logout']);
         Route::apiResource('books', BookController::class)
-        ->only('index', 'store');
+        ->only('index', 'store', 'update');
     });
 });

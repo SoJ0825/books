@@ -53,7 +53,7 @@ class BookPolicy
      */
     public function update(User $user, Book $book)
     {
-        //
+        return $user->getKey() === $book->user_id || $user->isAdmin();
     }
 
     /**

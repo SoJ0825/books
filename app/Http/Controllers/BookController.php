@@ -28,4 +28,15 @@ class BookController extends Controller
         }
         return $books->paginate();
     }
+
+    public function update(Request $request, Book $book)
+    {
+        $this->authorize('update', [Book::class, $book]);
+        $validated = $this->validate($request, [
+            'name'   => ['required', 'string', 'max:255'],
+            'author' => ['required', 'string', 'max:255'],
+        ]);
+        $book->update($validated);
+        return $book;
+    }
 }
