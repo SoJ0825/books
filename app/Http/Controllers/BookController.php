@@ -46,4 +46,10 @@ class BookController extends Controller
         $book->delete();
         return response()->noContent();
     }
+
+    public function show(Book $book)
+    {
+        $this->authorize('view', [Book::class, $book]);
+        return $book;
+    }
 }

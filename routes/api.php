@@ -14,6 +14,6 @@ Route::prefix('user')->group(function () {
         });
         Route::get('logout', [AuthController::class, 'logout']);
         Route::apiResource('books', BookController::class)
-        ->only('index', 'store', 'update', 'destroy');
+            ->only('index', 'show', 'store', 'update', 'destroy');
     });
 });

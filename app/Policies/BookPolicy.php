@@ -30,7 +30,7 @@ class BookPolicy
      */
     public function view(User $user, Book $book)
     {
-        //
+        return $user->hasPermissionToViewBook();
     }
 
     /**
@@ -66,29 +66,5 @@ class BookPolicy
     public function delete(User $user, Book $book)
     {
         return $user->getKey() === $book->user_id || $user->isAdmin();
-    }
-
-    /**
-     * Determine whether the user can restore the model.
-     *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\Book  $book
-     * @return \Illuminate\Auth\Access\Response|bool
-     */
-    public function restore(User $user, Book $book)
-    {
-        //
-    }
-
-    /**
-     * Determine whether the user can permanently delete the model.
-     *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\Book  $book
-     * @return \Illuminate\Auth\Access\Response|bool
-     */
-    public function forceDelete(User $user, Book $book)
-    {
-        //
     }
 }
