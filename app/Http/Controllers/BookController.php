@@ -18,4 +18,14 @@ class BookController extends Controller
         ]);
         return $user->books()->create($validated);
     }
+
+    public function index(Request $request)
+    {
+        $this->authorize('viewAny', [Book::class]);
+        $books = Book::latest();
+        if ($request->boolean('owned')) {
+            $books->where('user_id', Auth::user()->getKey());
+        }
+        return $books->paginate();
+    }
 }
