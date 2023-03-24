@@ -39,4 +39,11 @@ class BookController extends Controller
         $book->update($validated);
         return $book;
     }
+
+    public function destroy(Book $book)
+    {
+        $this->authorize('delete', [Book::class, $book]);
+        $book->delete();
+        return response()->noContent();
+    }
 }
