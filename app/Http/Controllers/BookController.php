@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\BookCollection;
+use App\Http\Resources\BookResource;
 use App\Models\Book;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -16,17 +18,17 @@ class BookController extends Controller
             'name'   => ['required', 'string', 'max:255'],
             'author' => ['required', 'string', 'max:255'],
         ]);
-        return $user->books()->create($validated);
+        return BookResource::make($user->books()->create($validated));
     }
 
     public function index(Request $request)
     {
         $this->authorize('viewAny', [Book::class]);
-        $books = Book::latest();
+        $books = Book::latest()->with('user');
         if ($request->boolean('owned')) {
             $books->where('user_id', Auth::user()->getKey());
         }
-        return $books->paginate();
+        return BookCollection::make($books->paginate());
     }
 
     public function update(Request $request, Book $book)
@@ -37,7 +39,7 @@ class BookController extends Controller
             'author' => ['required', 'string', 'max:255'],
         ]);
         $book->update($validated);
-        return $book;
+        return BookResource::make($book->load('user'));
     }
 
     public function destroy(Book $book)
@@ -50,6 +52,6 @@ class BookController extends Controller
     public function show(Book $book)
     {
         $this->authorize('view', [Book::class, $book]);
-        return $book;
+        return BookResource::make($book);
     }
 }
