@@ -17,11 +17,3 @@ Route::prefix('user')->group(function () {
             ->only('index', 'show', 'store', 'update', 'destroy');
     });
 });
-
-Route::post('photo', function (\Illuminate\Http\Request $request) {
-    $user = App\Models\User::find(1);
-    $user->image()->create([
-        'url' => $request->file('image')->store('users'),
-    ]);
-    return $user->image;
-});
